@@ -1,6 +1,6 @@
 <?php
 // データベース接続設定
-$host = 'localhost'; // ホスト名
+$host = ''; // ホスト名
 $dbname = ''; // データベース名
 $username = ''; // データベースユーザー名
 $password = ''; // データベースパスワード
@@ -25,8 +25,13 @@ $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($user && $password_input === $user['password']) {
+    session_start();
+    $_SESSION['login']=1;
+    $_SESSION['userID']=$user['userID'];
+    $_SESSION['name']=$user['name'];
     // ログイン成功時にユーザーごとのページにリダイレクト
-    header("Location: homepage.php?userID=" . urlencode($userID));
+    header("Location: homepage.php");
+    //header("Location: homepage.php?userID=" . urlencode($userID));
     exit;
 } else {
     // ログイン失敗時
